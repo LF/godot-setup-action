@@ -1,0 +1,10 @@
+name: Godot setup action
+description: Moves Godot support files from the root user to the local user
+
+runs:
+  using: composite
+  steps:
+  - run: mkdir -v -p ~/.local/share/godot/templates
+    shell: bash
+  - run: mv /root/.local/share/godot/templates/* ~/.local/share/godot/templates
+    shell: bash
