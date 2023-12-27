@@ -4,7 +4,18 @@ description: Moves Godot support files from the root user to the local user
 runs:
   using: composite
   steps:
-  - run: mkdir -v -p ~/.local/share/godot/templates
+  - id: get-godot-version
+    run: echo "godot-version=$(godot --version)" >> $GITHUB_OUTPUT
     shell: bash
-  - run: mv /root/.local/share/godot/templates/* ~/.local/share/godot/templates
+  - if: ${{ startsWith(steps.get-godot-version.outputs.godot-version, '4') }}
+    run: mkdir -v -p ~/.local/share/godot/export_templates
+    shell: bash
+  - if: ${{ startsWith(steps.get-godot-version.outputs.godot-version, '4') }}
+    run: mv /root/.local/share/godot/export_templates/* ~/.local/share/godot/export_templates
+    shell: bash
+  - if: ${{ startsWith(steps.get-godot-version.outputs.godot-version, '3') }}
+    run: mkdir -v -p ~/.local/share/godot/templates
+    shell: bash
+  - if: ${{ startsWith(steps.get-godot-version.outputs.godot-version, '3') }}
+    run: mv /root/.local/share/godot/templates/* ~/.local/share/godot/templates
     shell: bash
